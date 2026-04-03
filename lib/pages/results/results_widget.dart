@@ -1,5 +1,6 @@
 import '/components/filter_chip_widget.dart';
 import '/components/result_card_widget.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -62,7 +63,20 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      FlutterFlowIconButton(
+                        buttonSize: 40.0,
+                        icon: Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 20.0,
+                        ),
+                        onPressed: () => context.safePop(),
+                      ),
+                      Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,6 +120,8 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                                   .fontStyle,
                               lineHeight: 1.47,
                             ),
+                      ),
+                    ],
                       ),
                     ],
                   ),
@@ -320,166 +336,6 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                             .md)),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: FlutterFlowTheme.of(context).secondaryBackground,
-            ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 32.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => context.goNamed('Home'),
-                    child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.search_rounded,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      Text(
-                        'Search',
-                        style: FlutterFlowTheme.of(context).labelSmall.override(
-                              font: GoogleFonts.outfit(
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
-                              ),
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              fontSize: 11.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontStyle,
-                              lineHeight: 1.27,
-                            ),
-                      ),
-                    ].divide(SizedBox(
-                        height: FlutterFlowTheme.of(context)
-                            .designToken
-                            .spacing
-                            .xs)),
-                  ),
-                  ),
-                  GestureDetector(
-                    onTap: () => context.pushNamed('SearchHistory'),
-                    child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.history_rounded,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      Text(
-                        'History',
-                        style: FlutterFlowTheme.of(context).labelSmall.override(
-                              font: GoogleFonts.outfit(
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
-                              ),
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              fontSize: 11.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontStyle,
-                              lineHeight: 1.27,
-                            ),
-                      ),
-                    ].divide(SizedBox(
-                        height: FlutterFlowTheme.of(context)
-                            .designToken
-                            .spacing
-                            .xs)),
-                  ),
-                  ),
-                  GestureDetector(
-                    onTap: () => context.pushNamed('Bookmarks'),
-                    child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.bookmark_outline_rounded,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      Text(
-                        'Saved',
-                        style: FlutterFlowTheme.of(context).labelSmall.override(
-                              font: GoogleFonts.outfit(
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
-                              ),
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              fontSize: 11.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontStyle,
-                              lineHeight: 1.27,
-                            ),
-                      ),
-                    ].divide(SizedBox(
-                        height: FlutterFlowTheme.of(context)
-                            .designToken
-                            .spacing
-                            .xs)),
-                  ),
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.person_outline_rounded,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      Text(
-                        'Profile',
-                        style: FlutterFlowTheme.of(context).labelSmall.override(
-                              font: GoogleFonts.outfit(
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
-                              ),
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              fontSize: 11.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontStyle,
-                              lineHeight: 1.27,
-                            ),
-                      ),
-                    ].divide(SizedBox(
-                        height: FlutterFlowTheme.of(context)
-                            .designToken
-                            .spacing
-                            .xs)),
-                  ),
-                ],
               ),
             ),
           ),

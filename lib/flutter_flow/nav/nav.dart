@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
+import '/pages/shell/main_shell_widget.dart';
 
 import '/index.dart';
 
@@ -29,22 +30,64 @@ class AppStateNotifier extends ChangeNotifier {
 }
 
 GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
-      initialLocation: '/',
+      initialLocation: HomeWidget.routePath,
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
+      redirect: (context, state) {
+        if (state.uri.path == '/') return HomeWidget.routePath;
+        return null;
+      },
       errorBuilder: (context, state) => HomeWidget(),
       routes: [
-        FFRoute(
-          name: '_initialize',
-          path: '/',
-          builder: (context, _) => HomeWidget(),
+        // ── Shell: persistent bottom nav for all primary tab destinations ──
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) =>
+              MainShellWidget(navigationShell: navigationShell),
+          branches: [
+            // Branch 0 – Search / Camera (Home)
+            StatefulShellBranch(
+              routes: [
+                FFRoute(
+                  name: HomeWidget.routeName,
+                  path: HomeWidget.routePath,
+                  builder: (context, params) => HomeWidget(),
+                ).toRoute(appStateNotifier),
+              ],
+            ),
+            // Branch 1 – History (SearchHistory)
+            StatefulShellBranch(
+              routes: [
+                FFRoute(
+                  name: SearchHistoryWidget.routeName,
+                  path: SearchHistoryWidget.routePath,
+                  builder: (context, params) => SearchHistoryWidget(),
+                ).toRoute(appStateNotifier),
+              ],
+            ),
+            // Branch 2 – Saved (Bookmarks)
+            StatefulShellBranch(
+              routes: [
+                FFRoute(
+                  name: BookmarksWidget.routeName,
+                  path: BookmarksWidget.routePath,
+                  builder: (context, params) => BookmarksWidget(),
+                ).toRoute(appStateNotifier),
+              ],
+            ),
+            // Branch 3 – Profile (placeholder – no screen yet)
+            StatefulShellBranch(
+              routes: [
+                FFRoute(
+                  name: '_profile',
+                  path: '/profile',
+                  builder: (context, params) => HomeWidget(),
+                ).toRoute(appStateNotifier),
+              ],
+            ),
+          ],
         ),
-        FFRoute(
-          name: HomeWidget.routeName,
-          path: HomeWidget.routePath,
-          builder: (context, params) => HomeWidget(),
-        ),
+        // ── Detail / secondary screens (no shell / bottom nav) ──
         FFRoute(
           name: ResultsWidget.routeName,
           path: ResultsWidget.routePath,
@@ -52,23 +95,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             imageFilePath:
                 params.getParam<String>('imageFilePath', ParamType.String),
           ),
-        ),
-        FFRoute(
-          name: BookmarksWidget.routeName,
-          path: BookmarksWidget.routePath,
-          builder: (context, params) => BookmarksWidget(),
-        ),
+        ).toRoute(appStateNotifier),
         FFRoute(
           name: SellerDetailsWidget.routeName,
           path: SellerDetailsWidget.routePath,
           builder: (context, params) => SellerDetailsWidget(),
-        ),
-        FFRoute(
-          name: SearchHistoryWidget.routeName,
-          path: SearchHistoryWidget.routePath,
-          builder: (context, params) => SearchHistoryWidget(),
-        )
-      ].map((r) => r.toRoute(appStateNotifier)).toList(),
+        ).toRoute(appStateNotifier),
+      ],
     );
 
 extension NavParamExtensions on Map<String, String?> {

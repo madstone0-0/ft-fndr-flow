@@ -6,3 +6,4 @@ export '/pages/seller_details/seller_details_widget.dart'
     show SellerDetailsWidget;
 export '/pages/search_history/search_history_widget.dart'
     show SearchHistoryWidget;
+export '/pages/shell/main_shell_widget.dart' show MainShellWidget;
