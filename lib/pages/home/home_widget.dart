@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'home_model.dart';
 export 'home_model.dart';
 
@@ -34,6 +35,14 @@ class _HomeWidgetState extends State<HomeWidget> {
     _model.dispose();
 
     super.dispose();
+  }
+
+  Future<void> _openCameraSearch() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null && mounted) {
+      context.pushNamed('Results');
+    }
   }
 
   @override
@@ -93,7 +102,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           size: 24.0,
                         ),
                         onPressed: () {
-                          print('IconButton pressed ...');
+                          context.pushNamed('SearchHistory');
                         },
                       ),
                       Container(
@@ -565,7 +574,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
+                  GestureDetector(
+                    onTap: _openCameraSearch,
+                    child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -599,7 +610,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                             .spacing
                             .xs)),
                   ),
-                  Column(
+                  ),
+                  GestureDetector(
+                    onTap: () => context.pushNamed('SearchHistory'),
+                    child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -633,7 +647,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                             .spacing
                             .xs)),
                   ),
-                  Column(
+                  ),
+                  GestureDetector(
+                    onTap: () => context.pushNamed('Bookmarks'),
+                    child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -666,6 +683,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                             .designToken
                             .spacing
                             .xs)),
+                  ),
                   ),
                   Column(
                     mainAxisSize: MainAxisSize.min,

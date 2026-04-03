@@ -76,7 +76,7 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                           size: 20.0,
                         ),
                         onPressed: () {
-                          print('IconButton pressed ...');
+                          context.safePop();
                         },
                       ),
                       Text(

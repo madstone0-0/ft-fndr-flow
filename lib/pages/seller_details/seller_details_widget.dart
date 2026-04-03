@@ -1038,7 +1038,7 @@ class _SellerDetailsWidgetState extends State<SellerDetailsWidget> {
                               size: 24.0,
                             ),
                             onPressed: () {
-                              print('IconButton pressed ...');
+                              context.safePop();
                             },
                           ),
                           Text(
@@ -1076,8 +1076,8 @@ class _SellerDetailsWidgetState extends State<SellerDetailsWidget> {
                               color: FlutterFlowTheme.of(context).primaryText,
                               size: 24.0,
                             ),
-                            onPressed: () {
-                              print('IconButton pressed ...');
+                            onPressed: () async {
+                              await launchURL('https://ftfndr.com');
                             },
                           ),
                         ],

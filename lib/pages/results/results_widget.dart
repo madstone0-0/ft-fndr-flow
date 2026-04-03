@@ -329,7 +329,9 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
+                  GestureDetector(
+                    onTap: () => context.goNamed('Home'),
+                    child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -363,7 +365,10 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                             .spacing
                             .xs)),
                   ),
-                  Column(
+                  ),
+                  GestureDetector(
+                    onTap: () => context.pushNamed('SearchHistory'),
+                    child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -397,7 +402,10 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                             .spacing
                             .xs)),
                   ),
-                  Column(
+                  ),
+                  GestureDetector(
+                    onTap: () => context.pushNamed('Bookmarks'),
+                    child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -430,6 +438,7 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                             .designToken
                             .spacing
                             .xs)),
+                  ),
                   ),
                   Column(
                     mainAxisSize: MainAxisSize.min,
