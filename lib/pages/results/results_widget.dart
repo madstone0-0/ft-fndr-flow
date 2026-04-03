@@ -9,7 +9,12 @@ import 'results_model.dart';
 export 'results_model.dart';
 
 class ResultsWidget extends StatefulWidget {
-  const ResultsWidget({super.key});
+  const ResultsWidget({
+    super.key,
+    this.imageFilePath,
+  });
+
+  final String? imageFilePath;
 
   static String routeName = 'Results';
   static String routePath = '/results';

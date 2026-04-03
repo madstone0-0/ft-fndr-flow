@@ -41,7 +41,10 @@ class _HomeWidgetState extends State<HomeWidget> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null && mounted) {
-      context.pushNamed('Results');
+      context.pushNamed(
+        'Results',
+        extra: <String, dynamic>{'imageFilePath': pickedFile.path},
+      );
     }
   }
 

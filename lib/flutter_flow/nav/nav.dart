@@ -48,7 +48,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: ResultsWidget.routeName,
           path: ResultsWidget.routePath,
-          builder: (context, params) => ResultsWidget(),
+          builder: (context, params) => ResultsWidget(
+            imageFilePath:
+                params.getParam<String>('imageFilePath', ParamType.String),
+          ),
         ),
         FFRoute(
           name: BookmarksWidget.routeName,
