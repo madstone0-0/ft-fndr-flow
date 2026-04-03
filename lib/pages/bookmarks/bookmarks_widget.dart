@@ -42,16 +42,16 @@ class _BookmarksWidgetState extends State<BookmarksWidget> {
         children: [
           Expanded(
             child: Container(
-        child: Padding(
-          padding: EdgeInsets.all(
-              FlutterFlowTheme.of(context).designToken.spacing.lg),
-          child: SingleChildScrollView(
-            primary: false,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              child: Padding(
+                padding: EdgeInsets.all(
+                    FlutterFlowTheme.of(context).designToken.spacing.lg),
+                child: SingleChildScrollView(
+                  primary: false,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

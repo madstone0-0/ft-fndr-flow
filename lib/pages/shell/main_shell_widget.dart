@@ -78,7 +78,7 @@ class _BottomNavBar extends StatelessWidget {
               _NavItem(
                 index: 0,
                 currentIndex: currentIndex,
-                activeIcon: Icons.photo_camera_rounded,
+                activeIcon: Icons.search_rounded,
                 inactiveIcon: Icons.search_rounded,
                 label: 'Search',
                 onTap: onTabTapped,

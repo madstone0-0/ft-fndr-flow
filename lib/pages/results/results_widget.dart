@@ -77,10 +77,10 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                         onPressed: () => context.safePop(),
                       ),
                       Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                       Text(
                         'Results',
                         style: FlutterFlowTheme.of(context)
@@ -121,7 +121,7 @@ class _ResultsWidgetState extends State<ResultsWidget> {
                               lineHeight: 1.47,
                             ),
                       ),
-                    ],
+                        ],
                       ),
                     ],
                   ),
