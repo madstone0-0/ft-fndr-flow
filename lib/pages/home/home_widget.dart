@@ -42,7 +42,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -124,7 +124,14 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
             ),
           ),
-          Padding(
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
             padding: EdgeInsets.all(
                 FlutterFlowTheme.of(context).designToken.spacing.lg),
             child: ClipRRect(
@@ -542,7 +549,10 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
             ),
           ),
-          Spacer(),
+                ],
+              ),
+            ),
+          ),
           Container(
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
