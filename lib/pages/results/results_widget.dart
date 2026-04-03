@@ -325,7 +325,7 @@ class _ResultsWidgetState extends State<ResultsWidget> {
           ),
           Container(
             decoration: BoxDecoration(
-              color: Color(0xFFE0E0E0),
+              color: FlutterFlowTheme.of(context).secondaryBackground,
             ),
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 32.0),

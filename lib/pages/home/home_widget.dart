@@ -58,6 +58,27 @@ class _HomeWidgetState extends State<HomeWidget> {
     }
   }
 
+  Future<void> _openGallerySearch() async {
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null && mounted) {
+        context.pushNamed(
+          'Results',
+          extra: <String, dynamic>{'imageFilePath': pickedFile.path},
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not open gallery. Please check photo permissions.'),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,7 +174,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
+                  GestureDetector(
+                    onTap: _openCameraSearch,
+                    child: Padding(
             padding: EdgeInsets.all(
                 FlutterFlowTheme.of(context).designToken.spacing.lg),
             child: ClipRRect(
@@ -262,6 +285,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
             ),
           ),
+                  ),
           Container(
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(
@@ -276,7 +300,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: Container(
+                    child: GestureDetector(
+                      onTap: _openGallerySearch,
+                      child: Container(
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondary,
                         borderRadius: BorderRadius.circular(
@@ -356,6 +382,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ],
                         ),
                       ),
+                    ),
                     ),
                   ),
                   Expanded(

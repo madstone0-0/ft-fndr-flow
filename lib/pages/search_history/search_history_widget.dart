@@ -501,7 +501,9 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Align(
+                  GestureDetector(
+                    onTap: () => context.goNamed('Home'),
+                    child: Align(
                     alignment: AlignmentDirectional(0.0, 0.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -541,6 +543,7 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                               .spacing
                               .xs)),
                     ),
+                  ),
                   ),
                   Align(
                     alignment: AlignmentDirectional(0.0, 0.0),
@@ -582,7 +585,9 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                               .xs)),
                     ),
                   ),
-                  Align(
+                  GestureDetector(
+                    onTap: () => context.pushNamed('Bookmarks'),
+                    child: Align(
                     alignment: AlignmentDirectional(0.0, 0.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -590,7 +595,7 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.favorite_outline_rounded,
+                          Icons.bookmark_outline_rounded,
                           color: FlutterFlowTheme.of(context).secondaryText,
                           size: 24.0,
                         ),
@@ -622,6 +627,7 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                               .spacing
                               .xs)),
                     ),
+                  ),
                   ),
                   Align(
                     alignment: AlignmentDirectional(0.0, 0.0),
