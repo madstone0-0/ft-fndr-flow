@@ -38,13 +38,23 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Future<void> _openCameraSearch() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-    if (pickedFile != null && mounted) {
-      context.pushNamed(
-        'Results',
-        extra: <String, dynamic>{'imageFilePath': pickedFile.path},
-      );
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+      if (pickedFile != null && mounted) {
+        context.pushNamed(
+          'Results',
+          extra: <String, dynamic>{'imageFilePath': pickedFile.path},
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not open camera. Please check camera permissions.'),
+          ),
+        );
+      }
     }
   }
 
