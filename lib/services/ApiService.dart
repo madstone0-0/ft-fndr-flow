@@ -6,6 +6,7 @@ import 'package:retrofit/retrofit.dart';
 part 'ApiService.g.dart';
 
 // Routes
+const String searchRoute = "/search";
  const String loginRoute = "/auth/login";
  const String signupRoute = "/auth/signup";
  const String logoutRoute = "/auth/logout";
@@ -15,7 +16,7 @@ part 'ApiService.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
-  @POST("/")
+  @POST(searchRoute)
   @MultiPart()
   Future<SearchResponse> searchForVisuallySimilarImages({
     @Part(name: "file") required MultipartFile file,

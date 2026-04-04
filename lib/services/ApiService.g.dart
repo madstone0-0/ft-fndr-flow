@@ -55,7 +55,7 @@ class _ApiService implements ApiService {
       )
           .compose(
             _dio.options,
-            '/',
+            '/search',
             queryParameters: queryParameters,
             data: _data,
           )
