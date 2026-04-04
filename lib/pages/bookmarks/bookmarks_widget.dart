@@ -54,7 +54,7 @@ class _BookmarksWidgetState extends State<BookmarksWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.history_rounded, size: 64.0, color: theme.secondaryText),
+            Icon(Icons.bookmark_rounded, size: 64.0, color: theme.secondaryText),
             SizedBox(height: theme.designToken.spacing.lg),
             Text(
               'Sign in to view your bookmarks',

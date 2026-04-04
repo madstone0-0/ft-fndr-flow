@@ -1,5 +1,4 @@
 import 'package:ft_fndr_app/providers/AuthNotifier.dart';
-
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -32,7 +31,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
     _model.loginEmailFocusNode = FocusNode();
     _model.loginPasswordFocusNode = FocusNode();
-    _model.signupNameFocusNode = FocusNode();
+    _model.signupFNameFocusNode = FocusNode();
+    _model.signupLNameFocusNode = FocusNode();
     _model.signupEmailFocusNode = FocusNode();
     _model.signupPasswordFocusNode = FocusNode();
     _model.signupConfirmPasswordFocusNode = FocusNode();
@@ -46,62 +46,109 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   void _onAuthStateChanged() {
-    if (mounted) {
-      setState(() {});
-    }
+    if (mounted) setState(() {});
   }
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  InputDecoration _fieldDecoration(
+    BuildContext context,
+    String label,
+    String hint, {
+    Widget? suffixIcon,
+  }) {
+    final theme = FlutterFlowTheme.of(context);
+    final radius = BorderRadius.circular(theme.designToken.radius.sm);
+    return InputDecoration(
+      labelText: label,
+      hintText: hint,
+      suffixIcon: suffixIcon,
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: theme.outline, width: 1.0),
+        borderRadius: radius,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: theme.primary, width: 2.0),
+        borderRadius: radius,
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: theme.error, width: 1.0),
+        borderRadius: radius,
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: theme.error, width: 2.0),
+        borderRadius: radius,
+      ),
+    );
+  }
+
+  IconButton _visibilityToggle(bool isVisible, VoidCallback onPressed) {
+    return IconButton(
+      icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off),
+      onPressed: onPressed,
+    );
+  }
+
+  FFButtonOptions _primaryButtonOptions(BuildContext context) {
+    final theme = FlutterFlowTheme.of(context);
+    return FFButtonOptions(
+      width: double.infinity,
+      height: 48.0,
+      color: theme.primary,
+      textStyle: theme.titleSmall.override(
+        font: GoogleFonts.outfit(fontWeight: FontWeight.w600),
+        color: Colors.white,
+      ),
+      borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
+    );
+  }
+
+  // ── Handlers ─────────────────────────────────────────────────────────────
 
   Future<void> _handleLogin() async {
     final email = _model.loginEmailController.text.trim();
     final password = _model.loginPasswordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
-      );
+      _showSnackBar('Please fill in all fields');
       return;
     }
 
     final success = await _authNotifier.login(email, password);
     if (mounted && !success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_authNotifier.errorMessage ?? 'Login failed')),
-      );
+      _showSnackBar(_authNotifier.errorMessage ?? 'Login failed');
     }
   }
 
   Future<void> _handleSignup() async {
-    final name = _model.signupNameController.text.trim();
+    final fname = _model.signupFNameController.text.trim();
+    final lname = _model.signupLNameController.text.trim();
     final email = _model.signupEmailController.text.trim();
     final password = _model.signupPasswordController.text;
     final confirmPassword = _model.signupConfirmPasswordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all required fields')),
-      );
+      _showSnackBar('Please fill in all required fields');
       return;
     }
-
     if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
-      );
+      _showSnackBar('Passwords do not match');
       return;
     }
-
     if (password.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password must be at least 6 characters')),
-      );
+      _showSnackBar('Password must be at least 6 characters');
       return;
     }
 
-    final success = await _authNotifier.signup(email, password, name.isEmpty ? null : name);
+    final success = await _authNotifier.signup(email, password, fname, lname);
     if (mounted && !success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_authNotifier.errorMessage ?? 'Signup failed')),
-      );
+      _showSnackBar(_authNotifier.errorMessage ?? 'Signup failed');
     }
   }
 
@@ -109,46 +156,50 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     await _authNotifier.logout();
   }
 
+  // ── Views ─────────────────────────────────────────────────────────────────
+
+  Widget _buildHeader(BuildContext context) {
+    final theme = FlutterFlowTheme.of(context);
+    return Container(
+      decoration: BoxDecoration(color: theme.secondaryBackground),
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(
+          theme.designToken.spacing.lg,
+          theme.designToken.spacing.md,
+          theme.designToken.spacing.lg,
+          theme.designToken.spacing.md,
+        ),
+        child: Text(
+          'Profile',
+          style: theme.headlineMedium.override(
+            font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
+            color: theme.primaryText,
+            fontSize: 28.0,
+            letterSpacing: 0.0,
+            fontWeight: FontWeight.w600,
+            lineHeight: 1.25,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildAuthenticatedView(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
     final user = _authNotifier.user;
+    final fullName = user?.userMetadata?.fullName;
 
     return Column(
       mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Header
-        Container(
-          decoration: BoxDecoration(color: theme.secondaryBackground),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              theme.designToken.spacing.lg,
-              theme.designToken.spacing.md,
-              theme.designToken.spacing.lg,
-              theme.designToken.spacing.md,
-            ),
-            child: Text(
-              'Profile',
-              style: theme.headlineMedium.override(
-                font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
-                color: theme.primaryText,
-                fontSize: 28.0,
-                letterSpacing: 0.0,
-                fontWeight: FontWeight.w600,
-                lineHeight: 1.25,
-              ),
-            ),
-          ),
-        ),
-        // Content
+        _buildHeader(context),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(theme.designToken.spacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // User info card
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -163,28 +214,25 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       children: [
                         Icon(Icons.person_rounded, size: 48.0, color: theme.primary),
                         SizedBox(height: theme.designToken.spacing.md),
-                        if (user?.name != null && user!.name!.isNotEmpty) ...[
+                        if (fullName != null && fullName.isNotEmpty) ...[
                           Text(
-                            user.name!,
-                            style: theme.headlineSmall.override(
+                            fullName,
+                            style: theme.titleMedium.override(
                               font: GoogleFonts.outfit(fontWeight: FontWeight.w600),
-                              fontSize: 20.0,
+                              color: theme.primaryText,
                             ),
                           ),
                           SizedBox(height: theme.designToken.spacing.xs),
                         ],
                         Text(
                           user?.email ?? '',
-                          style: theme.bodyMedium.override(
-                            color: theme.secondaryText,
-                          ),
+                          style: theme.bodyMedium.override(color: theme.secondaryText),
                         ),
                       ],
                     ),
                   ),
                 ),
                 SizedBox(height: theme.designToken.spacing.xl),
-                // Logout button
                 FFButtonWidget(
                   onPressed: _handleLogout,
                   text: 'Logout',
@@ -209,6 +257,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   Widget _buildLoginForm(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
+    final isLoading = _authNotifier.status == AuthStatus.loading;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -222,65 +271,34 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           ),
         ),
         SizedBox(height: theme.designToken.spacing.lg),
-        // Email field
         TextFormField(
           controller: _model.loginEmailController,
           focusNode: _model.loginEmailFocusNode,
-          decoration: InputDecoration(
-            labelText: 'Email',
-            hintText: 'Enter your email',
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: theme.outline, width: 1.0),
-              borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: theme.primary, width: 2.0),
-              borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-            ),
-          ),
+          decoration: _fieldDecoration(context, 'Email', 'Enter your email'),
           keyboardType: TextInputType.emailAddress,
         ),
         SizedBox(height: theme.designToken.spacing.md),
-        // Password field
         TextFormField(
           controller: _model.loginPasswordController,
           focusNode: _model.loginPasswordFocusNode,
           obscureText: !_model.isPasswordVisible,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            hintText: 'Enter your password',
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: theme.outline, width: 1.0),
-              borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: theme.primary, width: 2.0),
-              borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-            ),
-            suffixIcon: IconButton(
-              icon: Icon(_model.isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-              onPressed: () => setState(() => _model.togglePasswordVisibility()),
+          decoration: _fieldDecoration(
+            context,
+            'Password',
+            'Enter your password',
+            suffixIcon: _visibilityToggle(
+              _model.isPasswordVisible,
+              () => setState(() => _model.togglePasswordVisibility()),
             ),
           ),
         ),
         SizedBox(height: theme.designToken.spacing.lg),
-        // Login button
         FFButtonWidget(
-          onPressed: _authNotifier.status == AuthStatus.loading ? null : _handleLogin,
-          text: _authNotifier.status == AuthStatus.loading ? 'Logging in...' : 'Login',
-          options: FFButtonOptions(
-            width: double.infinity,
-            height: 48.0,
-            color: theme.primary,
-            textStyle: theme.titleSmall.override(
-              font: GoogleFonts.outfit(fontWeight: FontWeight.w600),
-              color: Colors.white,
-            ),
-            borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-          ),
+          onPressed: isLoading ? null : _handleLogin,
+          text: isLoading ? 'Logging in...' : 'Login',
+          options: _primaryButtonOptions(context),
         ),
         SizedBox(height: theme.designToken.spacing.md),
-        // Switch to signup
         Center(
           child: GestureDetector(
             onTap: () => setState(() => _model.toggleMode()),
@@ -307,6 +325,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   Widget _buildSignupForm(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
+    final isLoading = _authNotifier.status == AuthStatus.loading;
 
     return SingleChildScrollView(
       child: Column(
@@ -321,106 +340,71 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             ),
           ),
           SizedBox(height: theme.designToken.spacing.lg),
-          // Name field
-          TextFormField(
-            controller: _model.signupNameController,
-            focusNode: _model.signupNameFocusNode,
-            decoration: InputDecoration(
-              labelText: 'Name (optional)',
-              hintText: 'Enter your name',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.outline, width: 1.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _model.signupFNameController,
+                  focusNode: _model.signupFNameFocusNode,
+                  decoration: _fieldDecoration(context, 'First Name', 'First name'),
+                  textCapitalization: TextCapitalization.words,
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.primary, width: 2.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
+              SizedBox(width: theme.designToken.spacing.sm),
+              Expanded(
+                child: TextFormField(
+                  controller: _model.signupLNameController,
+                  focusNode: _model.signupLNameFocusNode,
+                  decoration: _fieldDecoration(context, 'Last Name', 'Last name'),
+                  textCapitalization: TextCapitalization.words,
+                ),
               ),
-            ),
+            ],
           ),
           SizedBox(height: theme.designToken.spacing.md),
-          // Email field
           TextFormField(
             controller: _model.signupEmailController,
             focusNode: _model.signupEmailFocusNode,
-            decoration: InputDecoration(
-              labelText: 'Email',
-              hintText: 'Enter your email',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.outline, width: 1.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.primary, width: 2.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-              ),
-            ),
+            decoration: _fieldDecoration(context, 'Email', 'Enter your email'),
             keyboardType: TextInputType.emailAddress,
           ),
           SizedBox(height: theme.designToken.spacing.md),
-          // Password field
           TextFormField(
             controller: _model.signupPasswordController,
             focusNode: _model.signupPasswordFocusNode,
             obscureText: !_model.isPasswordVisible,
-            decoration: InputDecoration(
-              labelText: 'Password',
-              hintText: 'At least 6 characters',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.outline, width: 1.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.primary, width: 2.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(_model.isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => setState(() => _model.togglePasswordVisibility()),
+            decoration: _fieldDecoration(
+              context,
+              'Password',
+              'At least 6 characters',
+              suffixIcon: _visibilityToggle(
+                _model.isPasswordVisible,
+                () => setState(() => _model.togglePasswordVisibility()),
               ),
             ),
           ),
           SizedBox(height: theme.designToken.spacing.md),
-          // Confirm password field
           TextFormField(
             controller: _model.signupConfirmPasswordController,
             focusNode: _model.signupConfirmPasswordFocusNode,
             obscureText: !_model.isConfirmPasswordVisible,
-            decoration: InputDecoration(
-              labelText: 'Confirm Password',
-              hintText: 'Re-enter your password',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.outline, width: 1.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.primary, width: 2.0),
-                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(_model.isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => setState(() => _model.toggleConfirmPasswordVisibility()),
+            decoration: _fieldDecoration(
+              context,
+              'Confirm Password',
+              'Re-enter your password',
+              suffixIcon: _visibilityToggle(
+                _model.isConfirmPasswordVisible,
+                () => setState(() => _model.toggleConfirmPasswordVisibility()),
               ),
             ),
           ),
           SizedBox(height: theme.designToken.spacing.lg),
-          // Signup button
           FFButtonWidget(
-            onPressed: _authNotifier.status == AuthStatus.loading ? null : _handleSignup,
-            text: _authNotifier.status == AuthStatus.loading ? 'Creating account...' : 'Sign Up',
-            options: FFButtonOptions(
-              width: double.infinity,
-              height: 48.0,
-              color: theme.primary,
-              textStyle: theme.titleSmall.override(
-                font: GoogleFonts.outfit(fontWeight: FontWeight.w600),
-                color: Colors.white,
-              ),
-              borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-            ),
+            onPressed: isLoading ? null : _handleSignup,
+            text: isLoading ? 'Creating account...' : 'Sign Up',
+            options: _primaryButtonOptions(context),
           ),
           SizedBox(height: theme.designToken.spacing.md),
-          // Switch to login
           Center(
             child: GestureDetector(
               onTap: () => setState(() => _model.toggleMode()),
@@ -448,36 +432,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   Widget _buildUnauthenticatedView(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
-
     return Column(
       mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Header
-        Container(
-          decoration: BoxDecoration(color: theme.secondaryBackground),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              theme.designToken.spacing.lg,
-              theme.designToken.spacing.md,
-              theme.designToken.spacing.lg,
-              theme.designToken.spacing.md,
-            ),
-            child: Text(
-              'Profile',
-              style: theme.headlineMedium.override(
-                font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
-                color: theme.primaryText,
-                fontSize: 28.0,
-                letterSpacing: 0.0,
-                fontWeight: FontWeight.w600,
-                lineHeight: 1.25,
-              ),
-            ),
-          ),
-        ),
-        // Auth forms
+        _buildHeader(context),
         Expanded(
           child: Center(
             child: SingleChildScrollView(
@@ -498,9 +457,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     if (_authNotifier.status == AuthStatus.loading && _authNotifier.user == null) {
       return const Center(child: CircularProgressIndicator());
     }
-
-    return _authNotifier.isAuthenticated
-        ? _buildAuthenticatedView(context)
-        : _buildUnauthenticatedView(context);
+    return _authNotifier.isAuthenticated ? _buildAuthenticatedView(context) : _buildUnauthenticatedView(context);
   }
 }

@@ -1,11 +1,9 @@
 import '/flutter_flow/flutter_flow_model.dart';
-import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
-
 import 'profile_widget.dart' show ProfileWidget;
 
 class ProfileModel extends FlutterFlowModel<ProfileWidget> {
-  // Form controllers for login
+  // Login
   final loginEmailController = TextEditingController();
   final loginPasswordController = TextEditingController();
   FocusNode? loginEmailFocusNode;
@@ -13,22 +11,25 @@ class ProfileModel extends FlutterFlowModel<ProfileWidget> {
   String? Function(BuildContext, String?)? loginEmailValidator;
   String? Function(BuildContext, String?)? loginPasswordValidator;
 
-  // Form controllers for signup
-  final signupNameController = TextEditingController();
+  // Signup
+  final signupFNameController = TextEditingController();
+  final signupLNameController = TextEditingController();
   final signupEmailController = TextEditingController();
   final signupPasswordController = TextEditingController();
   final signupConfirmPasswordController = TextEditingController();
-  FocusNode? signupNameFocusNode;
+  FocusNode? signupFNameFocusNode;
+  FocusNode? signupLNameFocusNode;
   FocusNode? signupEmailFocusNode;
   FocusNode? signupPasswordFocusNode;
   FocusNode? signupConfirmPasswordFocusNode;
-  String? Function(BuildContext, String?)? signupNameValidator;
+  String? Function(BuildContext, String?)? signupFNameValidator;
+  String? Function(BuildContext, String?)? signupLNameValidator;
   String? Function(BuildContext, String?)? signupEmailValidator;
   String? Function(BuildContext, String?)? signupPasswordValidator;
   String? Function(BuildContext, String?)? signupConfirmPasswordValidator;
 
   // UI state
-  bool isLoginMode = true; // true = login, false = signup
+  bool isLoginMode = true;
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
 
@@ -42,25 +43,21 @@ class ProfileModel extends FlutterFlowModel<ProfileWidget> {
     loginEmailFocusNode?.dispose();
     loginPasswordFocusNode?.dispose();
 
-    signupNameController.dispose();
+    signupFNameController.dispose();
+    signupLNameController.dispose();
     signupEmailController.dispose();
     signupPasswordController.dispose();
     signupConfirmPasswordController.dispose();
-    signupNameFocusNode?.dispose();
+    signupFNameFocusNode?.dispose();
+    signupLNameFocusNode?.dispose(); // was missing
     signupEmailFocusNode?.dispose();
     signupPasswordFocusNode?.dispose();
     signupConfirmPasswordFocusNode?.dispose();
   }
 
-  void toggleMode() {
-    isLoginMode = !isLoginMode;
-  }
+  void toggleMode() => isLoginMode = !isLoginMode;
 
-  void togglePasswordVisibility() {
-    isPasswordVisible = !isPasswordVisible;
-  }
+  void togglePasswordVisibility() => isPasswordVisible = !isPasswordVisible;
 
-  void toggleConfirmPasswordVisibility() {
-    isConfirmPasswordVisible = !isConfirmPasswordVisible;
-  }
+  void toggleConfirmPasswordVisibility() => isConfirmPasswordVisible = !isConfirmPasswordVisible;
 }

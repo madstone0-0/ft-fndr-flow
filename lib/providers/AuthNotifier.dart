@@ -15,8 +15,11 @@ class AuthNotifier extends ChangeNotifier {
 
   // Getters
   AuthStatus get status => _status;
+
   User? get user => _user;
+
   String? get errorMessage => _errorMessage;
+
   bool get isAuthenticated => _status == AuthStatus.authenticated;
 
   // Initialize auth state (restore session)
@@ -48,7 +51,7 @@ class AuthNotifier extends ChangeNotifier {
 
     try {
       final response = await _authService.login(email, password);
-      _user = response.user;
+      _user = response.data.user;
       _status = AuthStatus.authenticated;
       notifyListeners();
       return true;
@@ -61,14 +64,14 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   // Signup
-  Future<bool> signup(String email, String password, String? name) async {
+  Future<bool> signup(String email, String password, String fname, String lname) async {
     _status = AuthStatus.loading;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final response = await _authService.signup(email, password, name);
-      _user = response.user;
+      final response = await _authService.signup(email, password, fname, lname);
+      _user = response.data.user;
       _status = AuthStatus.authenticated;
       notifyListeners();
       return true;
