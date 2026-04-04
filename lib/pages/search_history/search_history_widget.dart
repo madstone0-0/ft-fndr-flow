@@ -31,10 +31,21 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
     _model.textController ??= TextEditingController(text: '');
     _model.textFieldFocusNode ??= FocusNode();
     _authNotifier = getIt<AuthNotifier>();
+    _authNotifier.addListener(_onAuthStateChanged);
 
     // Only load history if authenticated
     if (_authNotifier.isAuthenticated) {
       _loadHistory();
+    }
+  }
+
+  void _onAuthStateChanged() {
+    if (mounted) {
+      setState(() {});
+      // Reload history when user logs in
+      if (_authNotifier.isAuthenticated) {
+        _loadHistory();
+      }
     }
   }
 
@@ -46,6 +57,7 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
 
   @override
   void dispose() {
+    _authNotifier.removeListener(_onAuthStateChanged);
     _model.dispose();
     super.dispose();
   }
