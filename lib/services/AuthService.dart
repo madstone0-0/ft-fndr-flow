@@ -31,11 +31,7 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    try {
-      await _apiService.logout();
-    } catch (e) {
-      // Continue with local logout even if API call fails
-    }
+    // Handle logout locally by clearing stored auth data
     await _clearAuthData();
   }
 
