@@ -1,6 +1,9 @@
 import '/components/history_item_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/providers/auth_notifier.dart';
+import '/services/Locator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'search_history_model.dart';
@@ -18,6 +21,7 @@ class SearchHistoryWidget extends StatefulWidget {
 
 class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
   late SearchHistoryModel _model;
+  late AuthNotifier _authNotifier;
 
   @override
   void initState() {
@@ -25,7 +29,12 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
     _model = createModel(context, () => SearchHistoryModel());
     _model.textController ??= TextEditingController(text: '');
     _model.textFieldFocusNode ??= FocusNode();
-    _loadHistory();
+    _authNotifier = getIt<AuthNotifier>();
+
+    // Only load history if authenticated
+    if (_authNotifier.isAuthenticated) {
+      _loadHistory();
+    }
   }
 
   Future<void> _loadHistory() async {
@@ -116,8 +125,100 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
     };
   }
 
+  Widget _buildLoginPrompt(BuildContext context) {
+    final theme = FlutterFlowTheme.of(context);
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(theme.designToken.spacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.history_rounded, size: 64.0, color: theme.secondaryText),
+            SizedBox(height: theme.designToken.spacing.lg),
+            Text(
+              'Sign in to view your history',
+              style: theme.headlineSmall.override(
+                font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
+                fontSize: 20.0,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: theme.designToken.spacing.sm),
+            Text(
+              'Your search history will be saved and synced across devices when you log in.',
+              style: theme.bodyMedium.override(
+                color: theme.secondaryText,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: theme.designToken.spacing.xl),
+            FFButtonWidget(
+              onPressed: () {
+                // Navigate to Profile tab
+                context.go('/profile');
+              },
+              text: 'Go to Profile',
+              options: FFButtonOptions(
+                width: 200.0,
+                height: 48.0,
+                color: theme.primary,
+                textStyle: theme.titleSmall.override(
+                  font: GoogleFonts.outfit(fontWeight: FontWeight.w600),
+                  color: Colors.white,
+                ),
+                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Check if user is authenticated
+    if (!_authNotifier.isAuthenticated) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          // Header
+          Container(
+            decoration: BoxDecoration(color: FlutterFlowTheme.of(context).secondaryBackground),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(
+                  FlutterFlowTheme.of(context).designToken.spacing.lg,
+                  FlutterFlowTheme.of(context).designToken.spacing.md,
+                  FlutterFlowTheme.of(context).designToken.spacing.lg,
+                  FlutterFlowTheme.of(context).designToken.spacing.md),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Search History',
+                    style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          font: GoogleFonts.playfairDisplay(
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FlutterFlowTheme.of(context).headlineMedium.fontStyle,
+                          ),
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          fontSize: 28.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w600,
+                          lineHeight: 1.25,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Login prompt
+          Expanded(child: _buildLoginPrompt(context)),
+        ],
+      );
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
