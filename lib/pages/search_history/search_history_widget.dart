@@ -185,7 +185,7 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
         children: [
           // Header
           Container(
-            decoration: BoxDecoration(color: FlutterFlowTheme.of(context).secondaryBackground),
+            decoration: BoxDecoration(),
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(
                   FlutterFlowTheme.of(context).designToken.spacing.lg,
@@ -193,6 +193,7 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                   FlutterFlowTheme.of(context).designToken.spacing.lg,
                   FlutterFlowTheme.of(context).designToken.spacing.md),
               child: Row(
+                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -200,13 +201,18 @@ class _SearchHistoryWidgetState extends State<SearchHistoryWidget> {
                     'Search History',
                     style: FlutterFlowTheme.of(context).headlineMedium.override(
                       font: GoogleFonts.playfairDisplay(
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FlutterFlowTheme.of(context).headlineMedium.fontStyle,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FlutterFlowTheme.of(context)
+                            .headlineMedium
+                            .fontStyle,
                       ),
                       color: FlutterFlowTheme.of(context).primaryText,
                       fontSize: 28.0,
                       letterSpacing: 0.0,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FlutterFlowTheme.of(context)
+                          .headlineMedium
+                          .fontStyle,
                       lineHeight: 1.25,
                     ),
                   ),

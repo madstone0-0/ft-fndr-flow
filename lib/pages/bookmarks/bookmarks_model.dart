@@ -2,7 +2,7 @@ import '/components/bookmark_item_widget.dart';
 import '/components/stat_card_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_util.dart' hide BookmarksWidget;
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';

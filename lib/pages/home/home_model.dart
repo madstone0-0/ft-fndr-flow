@@ -1,7 +1,7 @@
 import '/components/recent_search_card_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_util.dart' hide HomeWidget;
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import 'home_widget.dart' show HomeWidget;

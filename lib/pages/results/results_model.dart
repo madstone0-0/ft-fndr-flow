@@ -1,10 +1,10 @@
-import '/components/filter_chip_widget.dart';
+import '../../components/FilterChip_model.dart';
 import '/components/result_card_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
-import 'results_widget.dart' show ResultsWidget;
+import 'results_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,3 +46,4 @@ class ResultsModel extends FlutterFlowModel<ResultsWidget> {
     resultCardModel4.dispose();
   }
 }
+

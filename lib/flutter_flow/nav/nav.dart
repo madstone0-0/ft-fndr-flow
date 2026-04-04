@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ft_fndr_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:ft_fndr_app/flutter_flow/flutter_flow_widgets.dart';
+import 'package:ft_fndr_app/pages/bookmarks/bookmarks_widget.dart';
+import 'package:ft_fndr_app/pages/home/home_widget.dart';
 import 'package:ft_fndr_app/pages/profile/profile_widget.dart';
+import 'package:ft_fndr_app/pages/results/results_widget.dart';
 import 'package:ft_fndr_app/pages/search_history/search_history_widget.dart';
 import 'package:ft_fndr_app/pages/seller_details/seller_details_widget.dart';
 import 'package:ft_fndr_app/providers/AuthNotifier.dart';
@@ -38,165 +41,8 @@ class AppStateNotifier extends ChangeNotifier {
   }
 }
 
-class BookmarksWidget extends StatelessWidget {
-  const BookmarksWidget({super.key});
-
-  static String get routeName => 'bookmarks';
-
-  static String get routePath => '/bookmarks';
-
-  @override
-  Widget build(BuildContext context) {
-    final authNotifier = getIt<AuthNotifier>();
-    final theme = FlutterFlowTheme.of(context);
-
-    // Check if user is authenticated
-    if (!authNotifier.isAuthenticated) {
-      return Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          // Header
-          Container(
-            decoration: BoxDecoration(color: theme.secondaryBackground),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(
-                theme.designToken.spacing.lg,
-                theme.designToken.spacing.md,
-                theme.designToken.spacing.lg,
-                theme.designToken.spacing.md,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bookmarks',
-                    style: theme.headlineMedium.override(
-                      font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
-                      color: theme.primaryText,
-                      fontSize: 28.0,
-                      letterSpacing: 0.0,
-                      fontWeight: FontWeight.w600,
-                      lineHeight: 1.25,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Login prompt
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(theme.designToken.spacing.lg),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.bookmark_rounded, size: 64.0, color: theme.secondaryText),
-                    SizedBox(height: theme.designToken.spacing.lg),
-                    Text(
-                      'Sign in to view your bookmarks',
-                      style: theme.headlineSmall.override(
-                        font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
-                        fontSize: 20.0,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: theme.designToken.spacing.sm),
-                    Text(
-                      'Save your favorite items and access them from any device.',
-                      style: theme.bodyMedium.override(color: theme.secondaryText),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: theme.designToken.spacing.xl),
-                    FFButtonWidget(
-                      onPressed: () => context.go('/profile'),
-                      text: 'Go to Profile',
-                      options: FFButtonOptions(
-                        width: 200.0,
-                        height: 48.0,
-                        color: theme.primary,
-                        textStyle: theme.titleSmall.override(
-                          font: GoogleFonts.outfit(fontWeight: FontWeight.w600),
-                          color: Colors.white,
-                        ),
-                        borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    // Authenticated view (placeholder)
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Container(
-          decoration: BoxDecoration(color: theme.secondaryBackground),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              theme.designToken.spacing.lg,
-              theme.designToken.spacing.md,
-              theme.designToken.spacing.lg,
-              theme.designToken.spacing.md,
-            ),
-            child: Text(
-              'Bookmarks',
-              style: theme.headlineMedium.override(
-                font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
-                fontSize: 28.0,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: Text(
-              'Your bookmarks will appear here',
-              style: theme.bodyMedium.override(color: theme.secondaryText),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ResultsWidget extends StatelessWidget {
-  const ResultsWidget({
-    super.key,
-    required this.imageFilePath,
-  });
-
-  static String get routeName => 'results';
-
-  static String get routePath => '/results';
-
-  final String imageFilePath;
-
-// Placeholder widget to compile
-  @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Results for $imageFilePath')));
-}
-
-class HomeWidget extends StatelessWidget {
-  const HomeWidget({super.key});
-
-  static String get routeName => 'home';
-
-  static String get routePath => '/home';
-
-  // Placeholder widget to compile
-  @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Home')));
-}
-
 GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
-      initialLocation: SearchHistoryWidget.routePath,
+      initialLocation: HomeWidget.routePath,
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
@@ -256,9 +102,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: ResultsWidget.routeName,
           path: ResultsWidget.routePath,
-          builder: (context, params) => ResultsWidget(
-            imageFilePath: params.getParam<String>('imageFilePath', ParamType.String),
-          ),
+          builder: (context, params) => ResultsWidget(),
         ).toRoute(appStateNotifier),
         FFRoute(
           name: SellerDetailsWidget.routeName,

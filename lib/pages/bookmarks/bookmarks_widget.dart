@@ -1,3 +1,6 @@
+import 'package:ft_fndr_app/providers/AuthNotifier.dart';
+import 'package:ft_fndr_app/services/Locator.dart';
+
 import '/components/bookmark_item_widget.dart';
 import '/components/stat_card_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
@@ -25,6 +28,7 @@ class BookmarksWidget extends StatefulWidget {
 
 class _BookmarksWidgetState extends State<BookmarksWidget> {
   late BookmarksModel _model;
+  late AuthNotifier _authNotifier;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -32,6 +36,7 @@ class _BookmarksWidgetState extends State<BookmarksWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => BookmarksModel());
+    _authNotifier = getIt<AuthNotifier>();
   }
 
   @override
@@ -41,8 +46,106 @@ class _BookmarksWidgetState extends State<BookmarksWidget> {
     super.dispose();
   }
 
+  Widget _buildLoginPrompt(BuildContext context) {
+    final theme = FlutterFlowTheme.of(context);
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(theme.designToken.spacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.history_rounded, size: 64.0, color: theme.secondaryText),
+            SizedBox(height: theme.designToken.spacing.lg),
+            Text(
+              'Sign in to view your bookmarks',
+              style: theme.headlineSmall.override(
+                font: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600),
+                fontSize: 20.0,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: theme.designToken.spacing.sm),
+            Text(
+              'Your bookmarks will be saved and synced across devices when you log in.',
+              style: theme.bodyMedium.override(
+                color: theme.secondaryText,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: theme.designToken.spacing.xl),
+            FFButtonWidget(
+              onPressed: () {
+                // Navigate to Profile tab
+                context.go('/profile');
+              },
+              text: 'Go to Profile',
+              options: FFButtonOptions(
+                width: 200.0,
+                height: 48.0,
+                color: theme.primary,
+                textStyle: theme.titleSmall.override(
+                  font: GoogleFonts.outfit(fontWeight: FontWeight.w600),
+                  color: Colors.white,
+                ),
+                borderRadius: BorderRadius.circular(theme.designToken.radius.sm),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Check if user is authenticated
+    if (!_authNotifier.isAuthenticated) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          // Header
+          Container(
+            decoration: BoxDecoration(),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(
+                  FlutterFlowTheme.of(context).designToken.spacing.lg,
+                  FlutterFlowTheme.of(context).designToken.spacing.md,
+                  FlutterFlowTheme.of(context).designToken.spacing.lg,
+                  FlutterFlowTheme.of(context).designToken.spacing.md),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Bookmarks',
+                    style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      font: GoogleFonts.playfairDisplay(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FlutterFlowTheme.of(context)
+                            .headlineMedium
+                            .fontStyle,
+                      ),
+                      color: FlutterFlowTheme.of(context).primaryText,
+                      fontSize: 28.0,
+                      letterSpacing: 0.0,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FlutterFlowTheme.of(context)
+                          .headlineMedium
+                          .fontStyle,
+                      lineHeight: 1.25,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Login prompt
+          Expanded(child: _buildLoginPrompt(context)),
+        ],
+      );
+    }
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
